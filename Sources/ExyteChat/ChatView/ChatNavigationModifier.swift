@@ -71,6 +71,7 @@ struct ChatNavigationModifier: ViewModifier {
                         .scaledToFit()
                         .foregroundColor(theme.colors.textLightContext)
                         .frame(width: 24, height: 24)
+                }
                 Spacer()
             }
             .padding(.leading, 10)
