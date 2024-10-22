@@ -68,6 +68,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
 
     /// User and MessageId
     public typealias TapAvatarClosure = (User, String) -> ()
+    public typealias TapCall = () -> ()
 
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Environment(\.chatTheme) private var theme
@@ -533,10 +534,10 @@ public extension ChatView {
     }
 
     @available(*, deprecated)
-    func chatNavigation(title: String, status: String? = nil, cover: URL? = nil) -> some View {
+    func chatNavigation(title: String, status: String? = nil, cover: URL? = nil, tapClosure: @escaping ChatView.TapCall) -> some View {
         var view = self
         view.chatTitle = title
-        return view.modifier(ChatNavigationModifier(title: title, status: status, cover: cover))
+        return view.modifier(ChatNavigationModifier(title: title, status: status, cover: cover, tapCallClosure: tapClosure))
     }
 
     // makes sense only for built-in message view
