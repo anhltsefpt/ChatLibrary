@@ -68,7 +68,7 @@ struct ChatNavigationModifier: ViewModifier {
                 Button(action: {
                     tapCallClosure()
                 }) {
-                    image
+                    image?
                         .resizable()
                         .frame(width: 38, height: 38)
                         .scaledToFit()
