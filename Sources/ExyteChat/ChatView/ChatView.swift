@@ -534,10 +534,11 @@ public extension ChatView {
     }
 
     @available(*, deprecated)
-    func chatNavigation(title: String, status: String? = nil, cover: URL? = nil, tapClosure: @escaping ChatView.TapCall) -> some View {
+    func chatNavigation(title: String, status: String? = nil, cover: URL? = nil, imageCall: Image, tapClosure: @escaping ChatView.TapCall) -> some View {
         var view = self
         view.chatTitle = title
-        return view.modifier(ChatNavigationModifier(title: title, status: status, cover: cover, tapCallClosure: tapClosure))
+
+        return view.modifier(ChatNavigationModifier(title: title, status: status, cover: cover, tapCallClosure: tapClosure, image: imageCall))
     }
 
     // makes sense only for built-in message view

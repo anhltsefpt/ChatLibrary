@@ -16,6 +16,7 @@ struct ChatNavigationModifier: ViewModifier {
     let status: String?
     let cover: URL?
     let tapCallClosure: ChatView.TapCall
+    let image: Image?
     
     func body(content: Content) -> some View {
         content
@@ -63,14 +64,14 @@ struct ChatNavigationModifier: ViewModifier {
                             .foregroundColor(theme.colors.grayStatus)
                     }
                 }
+                Spacer()
                 Button(action: {
                     tapCallClosure()
                 }) {
-                    Image("call")
+                    image
                         .resizable()
+                        .frame(width: 38, height: 38)
                         .scaledToFit()
-                        .foregroundColor(theme.colors.textLightContext)
-                        .frame(width: 24, height: 24)
                 }
                 Spacer()
             }
