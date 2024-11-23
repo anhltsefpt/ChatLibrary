@@ -63,19 +63,36 @@ struct ChatNavigationModifier: ViewModifier {
                             .foregroundColor(theme.colors.grayStatus)
                     }
                 }
+                
+                Spacer()
+                
                 Button(action: {
                     tapCallClosure()
                 }) {
-                    Image("call")
+                    Image(systemName: "phone")
                         .resizable()
                         .scaledToFit()
+                        .frame(width: 24.0, height: 24.0)
                         .foregroundColor(theme.colors.textLightContext)
-                        .frame(width: 24, height: 24)
                 }
-                Spacer()
             }
             .padding(.leading, 10)
         }
     }
     
+}
+
+struct ChatNavigationModifier_Preview: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            Text("Preview")
+                .modifier(ChatNavigationModifier(
+                    title: "Chat Title",
+                    status: "Online",
+                    cover: nil,
+                    tapCallClosure: {}
+                ))
+        }
+        .previewLayout(.sizeThatFits)
+    }
 }
