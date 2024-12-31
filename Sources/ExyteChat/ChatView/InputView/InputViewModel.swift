@@ -26,6 +26,7 @@ final class InputViewModel: ObservableObject {
 
     private var recordPlayerSubscription: AnyCancellable?
     private var subscriptions = Set<AnyCancellable>()
+    var recordingLimitReachedCallback: ChatView.RecordingReach10Second?
     
     func setRecorderSettings(recorderSettings: RecorderSettings = RecorderSettings()) {
         self.recorder.recorderSettings = recorderSettings
@@ -132,7 +133,18 @@ final class InputViewModel: ObservableObject {
                 state = .isRecordingTap
             }
             attachments.recording?.url = url
+            let recordingDurationLimit: Int = 10
+            try? await Task.sleep(nanoseconds: UInt64(recordingDurationLimit * 1_000_000_000))
+            recorder.stopRecording()
+            state = .hasRecording
+
+            onRecordingLimitReached()
         }
+    }
+
+    private func onRecordingLimitReached() {
+        guard let recordingLimit = recordingLimitReachedCallback else { return }
+        recordingLimit()
     }
 }
 

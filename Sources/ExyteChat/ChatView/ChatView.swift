@@ -69,6 +69,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
     /// User and MessageId
     public typealias TapAvatarClosure = (User, String) -> ()
     public typealias TapCall = () -> ()
+    public typealias RecordingReach10Second = () -> ()
 
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Environment(\.chatTheme) private var theme
@@ -111,6 +112,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
     var showMessageMenuOnLongPress: Bool = true
     var showNetworkConnectionProblem: Bool = false
     var tapAvatarClosure: TapAvatarClosure?
+    var recordingReachedLimit: RecordingReach10Second?
     var mediaPickerSelectionParameters: MediaPickerParameters?
     var orientationHandler: MediaPickerOrientationHandler = {_ in}
     var chatTitle: String?
@@ -147,7 +149,8 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                 didSendMessage: @escaping (DraftMessage) -> Void,
                 messageBuilder: @escaping MessageBuilderClosure,
                 inputViewBuilder: @escaping InputViewBuilderClosure,
-                messageMenuAction: MessageMenuActionClosure?) {
+                messageMenuAction: MessageMenuActionClosure?,
+                recordingLimitReachedCallback: RecordingReach10Second?) {
         self.type = chatType
         self.didSendMessage = didSendMessage
         self.sections = ChatView.mapMessages(messages, chatType: chatType, replyMode: replyMode)
@@ -155,6 +158,8 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
         self.messageBuilder = messageBuilder
         self.inputViewBuilder = inputViewBuilder
         self.messageMenuAction = messageMenuAction
+        
+        
     }
 
     public var body: some View {
@@ -341,6 +346,11 @@ public struct ChatView<MessageContent: View, InputViewContent: View, MenuAction:
                         NotificationCenter.default.post(name: .onScrollToBottom, object: nil)
                     }
                 }
+            }
+            
+            inputViewModel.recordingLimitReachedCallback = {
+                guard let closure = recordingReachedLimit else { return }
+                closure()
             }
         }
     }
@@ -554,6 +564,13 @@ public extension ChatView {
         view.tapAvatarClosure = closure
         return view
     }
+    
+    func recordingReachedLimit(_ closure: @escaping RecordingReach10Second) -> ChatView {
+        var view = self
+        view.recordingReachedLimit = closure
+        
+        return view
+    }
 
     func messageUseMarkdown(messageUseMarkdown: Bool) -> ChatView {
         var view = self
@@ -586,5 +603,4 @@ public extension ChatView {
         view.recorderSettings = settings
         return view
     }
-
 }

@@ -14,6 +14,7 @@ final class ChatViewModel: ObservableObject {
 
     let inputFieldId = UUID()
 
+
     var didSendMessage: (DraftMessage) -> Void = {_ in}
     var inputViewModel: InputViewModel?
     var globalFocusState: GlobalFocusState?
