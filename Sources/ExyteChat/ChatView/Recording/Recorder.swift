@@ -42,7 +42,7 @@ final class Recorder {
     
     private func startRecordingInternal(_ durationProgressHandler: @escaping ProgressHandler) -> URL? {
         let settings: [String : Any] = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVFormatIDKey: Int(kAudioFormatLinearPCM),
             AVSampleRateKey: recorderSettings.sampleRate,
             AVNumberOfChannelsKey: recorderSettings.numberOfChannels,
             AVLinearPCMBitDepthKey: recorderSettings.linearPCMBitDepth,
